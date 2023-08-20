@@ -13,10 +13,10 @@ public class TransferPage {
     private SelenideElement addButton = $("[data-test-id=action-transfer]");
     private  SelenideElement valueError = $("[data-test-id=error-notification]");
 
-    public TransferPage transfer(DataHelper.AddInfo addInfo, int amount) {
+    public TransferPage transfer(DataHelper.TransferInfo transferInfo, int amount) {
         DashboardPage dashboardPage = new DashboardPage();
         amountAdd.setValue(String.valueOf(amount));
-        fromAdd.setValue(addInfo.getFrom());
+        fromAdd.setValue(transferInfo.getFrom());
         addButton.click();
         if (amount > dashboardPage.getCardBalance(DataHelper.getFirstCard())) {
             valueError.shouldHave(text("Сумма пополнения не должна превышать баланс карты для списания"));

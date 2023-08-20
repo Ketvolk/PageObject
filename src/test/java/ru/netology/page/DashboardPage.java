@@ -34,7 +34,7 @@ public class DashboardPage {
     }
 
     public int getCardBalance(int index) {
-        val text = cards.get(index).text();
+        val text = cards.get(index-1).text();
         return extractBalance(text);
     }
 
@@ -43,8 +43,10 @@ public class DashboardPage {
         return extractBalance(text);
     }
 
-    public TransferPage fromFirstToSecondTransfer(DataHelper.CardInfo cardInfo) {
-        cards.findBy(attribute("data-test-id",cardInfo.getDataTestId())).$(".button").click();
+    public TransferPage cardToTransferClick(int index){
+        cards.get(index-1).$(".button").click();
         return new TransferPage();
     }
+
+
 }

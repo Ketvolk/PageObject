@@ -14,10 +14,6 @@ public class MoneyTransferTest {
     @BeforeEach
     void prepare() {
         open("http://localhost:9999/");
-
-
-
-
     }
 
     @Test
@@ -27,19 +23,17 @@ public class MoneyTransferTest {
         var verificationPage = loginPage.validLogin(authInfo);
         var verificationCode = DataHelper.getVerificationCodeFor(authInfo);
         var dashboardPage = verificationPage.validVerify(verificationCode);
-        var firstCard = DataHelper.getFirstCard();
-        var secondCard = DataHelper.getSecondCard();
-        var firstCardBalance = dashboardPage.getCardBalance(firstCard);
-        var secondCardBalance = dashboardPage.getCardBalance(secondCard);
-        dashboardPage.fromFirstToSecondTransfer(DataHelper.getSecondCard());
+        var firstCardBalance = dashboardPage.getCardBalance(1);
+        var secondCardBalance = dashboardPage.getCardBalance(2);
+        dashboardPage.cardToTransferClick(2);
 
         var transferPage = new TransferPage();
-        var addInfo = DataHelper.getAddInfo();
+        var transferInfo = DataHelper.getTransferInfo();
         int amount = 200;
-        transferPage.transfer(addInfo, amount);
+        transferPage.transfer(transferInfo, amount);
 
-        Assertions.assertEquals(firstCardBalance - amount, dashboardPage.getCardBalance(firstCard));
-        Assertions.assertEquals(secondCardBalance + amount, dashboardPage.getCardBalance(secondCard));
+        Assertions.assertEquals(firstCardBalance - amount, dashboardPage.getCardBalance(1));
+        Assertions.assertEquals(secondCardBalance + amount, dashboardPage.getCardBalance(2));
     }
 
     @Test
@@ -49,18 +43,16 @@ public class MoneyTransferTest {
         var verificationPage = loginPage.validLogin(authInfo);
         var verificationCode = DataHelper.getVerificationCodeFor(authInfo);
         var dashboardPage = verificationPage.validVerify(verificationCode);
-        var firstCard = DataHelper.getFirstCard();
-        var secondCard = DataHelper.getSecondCard();
-        var firstCardBalance = dashboardPage.getCardBalance(firstCard);
-        var secondCardBalance = dashboardPage.getCardBalance(secondCard);
-        dashboardPage.fromFirstToSecondTransfer(DataHelper.getSecondCard());
+        var firstCardBalance = dashboardPage.getCardBalance(1);
+        var secondCardBalance = dashboardPage.getCardBalance(2);
+        dashboardPage.cardToTransferClick(2);
 
         var transferPage = new TransferPage();
-        var addInfo = DataHelper.getAddInfo();
+        var transferInfo = DataHelper.getTransferInfo();
         int amount = 15_000;
-        transferPage.transfer(addInfo, amount);
+        transferPage.transfer(transferInfo, amount);
 
-        Assertions.assertEquals(dashboardPage.getCardBalance(firstCard), firstCardBalance);
-        Assertions.assertEquals(dashboardPage.getCardBalance(secondCard), secondCardBalance);
+        Assertions.assertEquals(firstCardBalance, dashboardPage.getCardBalance(1));
+        Assertions.assertEquals(secondCardBalance, dashboardPage.getCardBalance(2));
     }
 }
