@@ -29,7 +29,7 @@ public class MoneyTransferTest {
 
         var transferPage = new TransferPage();
         var transferInfo = DataHelper.getTransferInfo();
-        int amount = 200;
+        int amount = DataHelper.generateValidAmount(firstCardBalance);
         transferPage.transfer(transferInfo, amount);
 
         Assertions.assertEquals(firstCardBalance - amount, dashboardPage.getCardBalance(1));
@@ -49,8 +49,9 @@ public class MoneyTransferTest {
 
         var transferPage = new TransferPage();
         var transferInfo = DataHelper.getTransferInfo();
-        int amount = 15_000;
+        int amount = DataHelper.generateInvalidAmount(firstCardBalance);
         transferPage.transfer(transferInfo, amount);
+        transferPage.amountError("Сумма пополнения не должна превышать баланс карты для списания");
 
         Assertions.assertEquals(firstCardBalance, dashboardPage.getCardBalance(1));
         Assertions.assertEquals(secondCardBalance, dashboardPage.getCardBalance(2));
